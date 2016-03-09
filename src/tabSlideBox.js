@@ -22,13 +22,13 @@ function SimplePubSub() {
 			return this;
 		}
 	};
-};
+}
 
 angular.module('tabSlideBox', [])
-	.directive('onFinishRender', function ($timeout) {
+	.directive('onFinishRender', [ '$timeout', function ($timeout) {
 		return {
 			restrict: 'A',
-			link: function (scope, element, attr) {
+			link: function (scope) {
 				if (scope.$last === true) {
 					$timeout(function () {
 						scope.$emit('ngRepeatFinished');
@@ -36,14 +36,14 @@ angular.module('tabSlideBox', [])
 				}
 			}
 		}
-	})
+	}])
 	.directive('tabSlideBox', [ '$timeout', '$window', '$ionicSlideBoxDelegate', '$ionicScrollDelegate',
 		function($timeout, $window, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
 			'use strict';
 
 			return {
 				restrict : 'A, E, C',
-				link : function(scope, element, attrs, ngModel) {
+				link : function(scope, element, attrs) {
 
 					var ta = element[0], $ta = element;
 					$ta.addClass("tabbed-slidebox");
@@ -65,8 +65,10 @@ angular.module('tabSlideBox', [])
 					}
 
 					function renderScrollableTabs(){
-						var iconsDiv = angular.element(ta.querySelector(".tsb-icons")), icons = iconsDiv.find("a"), wrap = iconsDiv[0].querySelector(".tsb-ic-wrp"), totalTabs = icons.length;
-						var scrollDiv = wrap.querySelector(".scroll");
+						var iconsDiv = angular.element(ta.querySelector(".tsb-icons")),
+							icons = iconsDiv.find("a"),
+							totalTabs = icons.length;
+
 
 						angular.forEach(icons, function(value, key){
 							var a = angular.element(value);
@@ -95,7 +97,7 @@ angular.module('tabSlideBox', [])
 						}, 0);
 					}
 					function setPosition(index){
-						var iconsDiv = angular.element(ta.querySelector(".tsb-icons")), icons = iconsDiv.find("a"), wrap = iconsDiv[0].querySelector(".tsb-ic-wrp"), totalTabs = icons.length;
+						var iconsDiv = angular.element(ta.querySelector(".tsb-icons")), icons = iconsDiv.find("a"), wrap = iconsDiv[0].querySelector(".tsb-ic-wrp");
 						var scrollDiv = wrap.querySelector(".scroll");
 
 						var middle = iconsDiv[0].offsetWidth/2;
@@ -135,7 +137,7 @@ angular.module('tabSlideBox', [])
 								}
 							}
 						}
-					};
+					}
 					function getX(matrix) {
 						matrix = matrix.replace("translate3d(","");
 						matrix = matrix.replace("translate(","");
@@ -145,13 +147,13 @@ angular.module('tabSlideBox', [])
 					events.on('slideChange', function(data){
 						setPosition(data.index);
 					});
-					events.on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+					events.on('ngRepeatFinished', function() {
 						renderScrollableTabs();
 					});
 
 					renderScrollableTabs();
 				},
-				controller : function($scope, $attrs, $element) {
+				controller : function($scope) {
 					$scope.events = new SimplePubSub();
 
 					$scope.slideHasChanged = function(index){
