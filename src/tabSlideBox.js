@@ -58,7 +58,7 @@ angular.module('tabSlideBox', [])
 					if(handle){
 						ionicSlideBoxDelegate = ionicSlideBoxDelegate.$getByHandle(handle);
 					}
-
+					scope.ionicSlideBoxDelegate = ionicSlideBoxDelegate;
 					var ionicScrollDelegate = $ionicScrollDelegate;
 					if(handle){
 						ionicScrollDelegate = ionicScrollDelegate.$getByHandle(handle);
@@ -158,19 +158,13 @@ angular.module('tabSlideBox', [])
 
 					$scope.slideHasChanged = function(index){
 						$scope.events.trigger("slideChange", {"index" : index});
-						$timeout(function(){if($scope.onSlideMove) $scope.onSlideMove({"index" : eval(index)});},100);
+						$timeout(function(){if($scope.onSlideMove) $scope.onSlideMove({"index" : eval(index), "handler": $scope.ionicSlideBoxDelegate});},100);
 					};
 
 					$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
 						$scope.events.trigger("ngRepeatFinished", {"event" : ngRepeatFinishedEvent});
 					});
 
-
-					/*				$scope.slideHasChanged = function(index) {
-
-					 console.log('slide has changed. Index: ' + index);
-
-					 };*/
 				}
 			};
 
