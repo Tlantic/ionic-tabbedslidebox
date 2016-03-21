@@ -1,6 +1,6 @@
 {
   "name": "ionic-tabbedslidebox",
-  "version": "0.3.1",
+  "version": "0.3.3",
   "description": "Ionic Tabbed Slidebox ====================================",
   "main": "gulpfile.js",
   "directories": {
